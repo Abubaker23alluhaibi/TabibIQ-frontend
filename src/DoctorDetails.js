@@ -235,6 +235,10 @@ useEffect(() => {
       symptoms: reason || ''
     };
     
+    console.log('🔍 Booking data being sent:', bookingData);
+    console.log('🔍 User object:', user);
+    console.log('🔍 Profile object:', profile);
+    
     
     
     try {
