@@ -264,7 +264,7 @@ function DoctorSignUp() {
     
     try {
       console.log('📤 إرسال بيانات الطبيب مع الوثائق...');
-      const res = await fetch(process.env.REACT_APP_API_URL + '/doctors', {
+      const res = await fetch(process.env.REACT_APP_API_URL + '/auth/register-doctor', {
         method: 'POST',
         body: formData
       });
