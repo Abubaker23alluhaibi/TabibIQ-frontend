@@ -2,7 +2,7 @@
   "name": "tabib-iq-frontend",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://tabib-iq-frontend.onrender.com",
+  "homepage": "https://tabib-iq-frontend.vercel.app",
   "dependencies": {
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.6.3",
