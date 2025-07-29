@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import './Login.css';
 
 function DoctorAnalyticsPage() {
-  const { profile, signOut } = useAuth();
+  const { profile, user, signOut } = useAuth();
   const navigate = useNavigate();
   const { t } = useTranslation();
   const [appointments, setAppointments] = useState([]);
@@ -14,12 +14,20 @@ function DoctorAnalyticsPage() {
 
   // جلب جميع المواعيد
   const fetchAllAppointments = async () => {
-    if (!profile?._id) return;
+    const currentUser = profile || user;
+    if (!currentUser?.id) {
+      console.log('❌ لا يوجد معرف للمستخدم');
+      setLoading(false);
+      return;
+    }
     
     try {
       setLoading(true);
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/doctor-appointments/${profile._id}`);
+      console.log('🔍 جلب تحليلات الطبيب:', currentUser.id);
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/appointments/doctor/${currentUser.id}`);
       const data = await response.json();
+      
+      console.log('✅ تم جلب المواعيد:', data.length);
       
       if (Array.isArray(data)) {
         setAppointments(data);
@@ -27,7 +35,7 @@ function DoctorAnalyticsPage() {
         setAppointments([]);
       }
     } catch (err) {
-      console.error('خطأ في جلب المواعيد:', err);
+      console.error('❌ خطأ في جلب المواعيد:', err);
       setError(t('error_fetching_appointments'));
     } finally {
       setLoading(false);
@@ -36,7 +44,7 @@ function DoctorAnalyticsPage() {
 
   useEffect(() => {
     fetchAllAppointments();
-  }, [profile?._id]);
+  }, [profile?.id, user?.id]);
 
   // دالة التحليل
   const getAnalytics = () => {
@@ -72,7 +80,7 @@ function DoctorAnalyticsPage() {
       analytics.appointmentsByTime[timeKey] = (analytics.appointmentsByTime[timeKey] || 0) + 1;
       
       // إضافة المريض للمجموعة
-      analytics.totalPatients.add(apt.userId?._id || apt.userName);
+      analytics.totalPatients.add(apt.userId?._id || apt.patientId?._id || apt.userName || apt.patientId?.name);
     });
 
     // العثور على أكثر يوم مشغول

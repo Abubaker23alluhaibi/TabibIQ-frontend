@@ -63,6 +63,7 @@ function AdminDashboard() {
     if (!img) return null;
     if (img.startsWith('/uploads/')) return process.env.REACT_APP_API_URL + img;
     if (img.startsWith('http')) return img;
+    console.log('🔍 getImageUrl - img:', img);
     return null;
   };
   
@@ -147,6 +148,18 @@ function AdminDashboard() {
         const doctorsData = await doctorsRes.json();
         console.log('✅ تم جلب الأطباء:', doctorsData.length);
         console.log('📊 بيانات الأطباء:', doctorsData);
+        
+        // تشخيص الوثائق لكل طبيب
+        doctorsData.forEach((doctor, index) => {
+          console.log(`🔍 الطبيب ${index + 1} (${doctor.name}):`, {
+            image: doctor.image,
+            idFront: doctor.idFront,
+            idBack: doctor.idBack,
+            syndicateFront: doctor.syndicateFront,
+            syndicateBack: doctor.syndicateBack
+          });
+        });
+        
         setDoctors(Array.isArray(doctorsData) ? doctorsData : []);
       } else {
         console.log('❌ فشل في جلب الأطباء:', doctorsRes.status);
@@ -1365,6 +1378,15 @@ function AdminDashboard() {
                         <h4 style={{margin:'0 0 1rem 0', color:'#e65100'}}>📋 الوثائق المطلوبة للمراجعة:</h4>
                         
                         <div style={{display:'grid', gridTemplateColumns:'repeat(auto-fit, minmax(200px, 1fr))', gap:'1rem'}}>
+                          {/* تشخيص الوثائق */}
+                          {console.log('🔍 عرض وثائق الطبيب:', doctor.name, {
+                            image: doctor.image,
+                            idFront: doctor.idFront,
+                            idBack: doctor.idBack,
+                            syndicateFront: doctor.syndicateFront,
+                            syndicateBack: doctor.syndicateBack
+                          })}
+                          
                           {/* الصورة الشخصية */}
                           {(doctor.image || doctor.profileImage || doctor.imageUrl) && (
                             <div style={{textAlign:'center'}}>

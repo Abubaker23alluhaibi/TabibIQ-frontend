@@ -427,16 +427,19 @@ useEffect(() => {
                       disabled={isBooked}
                       onClick={()=>!isBooked && setSelectedTime(time)}
                       style={{
-                        background: isBooked ? '#f5f5f5' : (selectedTime === time ? '#7c4dff' : '#f0f0f0'),
-                        color: isBooked ? '#999' : (selectedTime === time ? '#fff' : '#333'),
-                        border:'none', borderRadius:12, padding:'0.8rem 1.2rem', fontWeight:700, fontSize:14, 
+                        background: isBooked ? '#fafafa' : (selectedTime === time ? '#7c4dff' : '#f0f0f0'),
+                        color: isBooked ? '#b0b0b0' : (selectedTime === time ? '#fff' : '#333'),
+                        border: isBooked ? '1px solid #e8e8e8' : 'none',
+                        borderRadius:12, padding:'0.8rem 1.2rem', fontWeight: isBooked ? 400 : 700, fontSize:14, 
                         cursor: isBooked ? 'not-allowed' : 'pointer', 
-                        boxShadow: selectedTime === time ? '0 2px 8px #7c4dff44' : '0 1px 4px #00000022',
+                        boxShadow: selectedTime === time ? '0 2px 8px #7c4dff44' : (isBooked ? 'none' : '0 1px 4px #00000022'),
                         transition:'all 0.2s ease', minWidth:80, textAlign:'center',
-                        opacity: isBooked ? 0.6 : 1
+                        opacity: isBooked ? 0.25 : 1,
+                        position: 'relative',
+                        filter: isBooked ? 'grayscale(50%)' : 'none'
                       }}
                     >
-                      {time} {isBooked && '(محجوز)'}
+                      {time} {isBooked && <span style={{fontSize: '11px', color: '#a0a0a0', fontWeight: 400}}>(محجوز)</span>}
                     </button>
                   );
                 })}

@@ -50,6 +50,44 @@ function DoctorProfile({ onClose, edit: editProp = false, modal = false }) {
     confirmPassword: ''
   });
 
+  // جلب بيانات الطبيب من الباكند
+  const fetchDoctorData = async () => {
+    try {
+      const currentUser = profile || user;
+      if (!currentUser?.id) {
+        console.log('❌ لا يوجد معرف للمستخدم');
+        return;
+      }
+
+      console.log('🔍 جلب بيانات الطبيب:', currentUser.id);
+      const res = await fetch(`${process.env.REACT_APP_API_URL}/doctor/${currentUser.id}`);
+      
+      if (res.ok) {
+        const data = await res.json();
+        console.log('✅ تم جلب بيانات الطبيب:', data.doctor);
+        
+        if (data.doctor) {
+          setForm({
+            name: data.doctor.name || '',
+            email: data.doctor.email || '',
+            phone: data.doctor.phone || '',
+            specialty: data.doctor.specialty || data.doctor.specialization || '',
+            province: data.doctor.province || '',
+            area: data.doctor.area || '',
+            clinicLocation: data.doctor.clinicLocation || '',
+            about: data.doctor.about || data.doctor.bio || '',
+            profileImage: data.doctor.profileImage || data.doctor.image || ''
+          });
+          setImageLoadError(false);
+        }
+      } else {
+        console.log('❌ خطأ في جلب بيانات الطبيب:', res.status);
+      }
+    } catch (error) {
+      console.error('❌ خطأ في جلب بيانات الطبيب:', error);
+    }
+  };
+
   // تحديث النموذج عند تغيير البيانات الشخصية
   useEffect(() => {
     // إذا تم تمرير editProp، استخدمه. وإلا اترك الحالة الحالية
@@ -59,6 +97,10 @@ function DoctorProfile({ onClose, edit: editProp = false, modal = false }) {
   }, [editProp]);
 
   useEffect(() => {
+    // جلب البيانات من الباكند أولاً
+    fetchDoctorData();
+    
+    // إذا لم تنجح عملية الجلب، استخدم البيانات المحلية
     if (profile) {
       console.log('🔍 profile data:', profile);
       console.log('🔍 profile.image:', profile.image);
