@@ -59,9 +59,9 @@ function UserHome() {
   };
 
   useEffect(() => {
-    console.log('🔄 جلب الأطباء من:', process.env.REACT_APP_API_URL + '/doctors');
+    console.log('🔄 جلب الأطباء من:', (process.env.REACT_APP_API_URL || 'https://tabib-iq-backend-production.up.railway.app') + '/doctors');
     
-   fetch(process.env.REACT_APP_API_URL + '/doctors')
+   fetch((process.env.REACT_APP_API_URL || 'https://tabib-iq-backend-production.up.railway.app') + '/doctors')
       .then(res => {
         console.log('📊 استجابة جلب الأطباء:', res.status);
         if (!res.ok) {
@@ -143,7 +143,7 @@ function UserHome() {
   // جلب إشعارات المستخدم
   useEffect(() => {
     if (!user?._id) return;
-    fetch(`${process.env.REACT_APP_API_URL}/notifications?userId=${user._id}`)
+          fetch(`${process.env.REACT_APP_API_URL || 'https://tabib-iq-backend-production.up.railway.app'}/notifications?userId=${user._id}`)
       .then(res => {
         if (res.ok) {
           return res.json();
@@ -172,7 +172,7 @@ function UserHome() {
   useEffect(() => {
     if (showNotif && user?._id && notifCount > 0) {
       setNotifCount(0); // تصفير العداد فوراً
-      fetch(`${process.env.REACT_APP_API_URL}/notifications/mark-read?userId=${user._id}`, { method: 'PUT' })
+              fetch(`${process.env.REACT_APP_API_URL || 'https://tabib-iq-backend-production.up.railway.app'}/notifications/mark-read?userId=${user._id}`, { method: 'PUT' })
         .then(res => {
           if (!res.ok) {
             console.log('❌ خطأ في تحديث حالة قراءة الإشعارات:', res.status);
@@ -206,7 +206,7 @@ function UserHome() {
 
   const toggleFavorite = async (doctorId) => {
     try {
-      const response = await fetch(process.env.REACT_APP_API_URL + '/favorites', {
+      const response = await fetch((process.env.REACT_APP_API_URL || 'https://tabib-iq-backend-production.up.railway.app') + '/favorites', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -231,7 +231,7 @@ function UserHome() {
   // دالة مساعدة لمسار صورة الدكتور
   const getImageUrl = img => {
     if (!img) return 'https://randomuser.me/api/portraits/men/32.jpg';
-    if (img.startsWith('/uploads/')) return process.env.REACT_APP_API_URL + img;
+    if (img.startsWith('/uploads/')) return (process.env.REACT_APP_API_URL || 'https://tabib-iq-backend-production.up.railway.app') + img;
     if (img.startsWith('http')) return img;
     return 'https://randomuser.me/api/portraits/men/32.jpg';
   };

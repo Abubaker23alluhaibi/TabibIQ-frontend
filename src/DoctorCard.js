@@ -19,7 +19,7 @@ const DoctorCard = ({ doctor }) => {
     }
     if (img.startsWith('/uploads/')) {
       // محاولة تحميل الصورة الحقيقية من الخادم
-      return process.env.REACT_APP_API_URL + img;
+      return (process.env.REACT_APP_API_URL || 'https://tabib-iq-backend-production.up.railway.app') + img;
     }
     if (img.startsWith('http')) return img;
     // إرجاع شعار المشروع كصورة افتراضية

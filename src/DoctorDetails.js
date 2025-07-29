@@ -43,7 +43,7 @@ function DoctorDetails() {
     }
     if (img.startsWith('/uploads/')) {
       // محاولة تحميل الصورة الحقيقية من الخادم
-      return process.env.REACT_APP_API_URL + img;
+      return (process.env.REACT_APP_API_URL || 'https://tabib-iq-backend-production.up.railway.app') + img;
     }
     if (img.startsWith('http')) return img;
     // إرجاع شعار المشروع كصورة افتراضية
@@ -56,7 +56,7 @@ useEffect(() => {
 }, [user, profile]);
 
   useEffect(() => {
-    fetch(`${process.env.REACT_APP_API_URL}/doctors`)
+    fetch(`${process.env.REACT_APP_API_URL || 'https://tabib-iq-backend-production.up.railway.app'}/doctors`)
       .then(res => res.json())
       .then(data => {
         const found = data.find(d => d._id === id);
@@ -117,7 +117,7 @@ useEffect(() => {
         return;
       }
       
-      const res = await fetch(`${process.env.REACT_APP_API_URL}/appointments/${doctorId}/${date}?patientId=${userId}`);
+      const res = await fetch(`${process.env.REACT_APP_API_URL || 'https://tabib-iq-backend-production.up.railway.app'}/appointments/${doctorId}/${date}?patientId=${userId}`);
       console.log('🔍 fetchBookedAppointments - response status:', res.status);
       
       if (res.ok) {
@@ -199,7 +199,7 @@ useEffect(() => {
     
     // فحص حالة تسجيل الدخول في قاعدة البيانات
     try {
-      const authCheck = await fetch(`${process.env.REACT_APP_API_URL}/check-auth`, {
+      const authCheck = await fetch(`${process.env.REACT_APP_API_URL || 'https://tabib-iq-backend-production.up.railway.app'}/check-auth`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ userId: userId })
@@ -253,7 +253,7 @@ useEffect(() => {
     
     
     try {
-      const res = await fetch(`${process.env.REACT_APP_API_URL}/appointments`, {
+      const res = await fetch(`${process.env.REACT_APP_API_URL || 'https://tabib-iq-backend-production.up.railway.app'}/appointments`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(bookingData)
@@ -263,7 +263,7 @@ useEffect(() => {
       if (res.ok) {
         // إنشاء إشعار للطبيب
         try {
-          await fetch(`${process.env.REACT_APP_API_URL}/notifications`, {
+          await fetch(`${process.env.REACT_APP_API_URL || 'https://tabib-iq-backend-production.up.railway.app'}/notifications`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({

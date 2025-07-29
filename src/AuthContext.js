@@ -53,7 +53,7 @@ export const AuthProvider = ({ children }) => {
 
   const signUp = async (email, password, userData) => {
     try {
-      const res = await fetch(`${process.env.REACT_APP_API_URL}/auth/register`, {
+      const res = await fetch(`${process.env.REACT_APP_API_URL || 'https://tabib-iq-backend-production.up.railway.app'}/auth/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password, ...userData })
@@ -76,7 +76,7 @@ export const AuthProvider = ({ children }) => {
       console.log('🔍 تسجيل الدخول:', { email, loginType });
       console.log('🔍 API URL:', process.env.REACT_APP_API_URL);
       
-      const res = await fetch(`${process.env.REACT_APP_API_URL}/auth/login`, {
+      const res = await fetch(`${process.env.REACT_APP_API_URL || 'https://tabib-iq-backend-production.up.railway.app'}/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password, loginType })
@@ -158,10 +158,10 @@ export const AuthProvider = ({ children }) => {
       const userId = currentUser.id || currentUser._id;
       
       if (currentUser.user_type === 'doctor') {
-        url = `${process.env.REACT_APP_API_URL}/doctor/${userId}`;
+        url = `${process.env.REACT_APP_API_URL || 'https://tabib-iq-backend-production.up.railway.app'}/doctor/${userId}`;
         key = 'doctor';
       } else {
-        url = `${process.env.REACT_APP_API_URL}/user/${userId}`;
+        url = `${process.env.REACT_APP_API_URL || 'https://tabib-iq-backend-production.up.railway.app'}/user/${userId}`;
         key = 'user';
       }
       

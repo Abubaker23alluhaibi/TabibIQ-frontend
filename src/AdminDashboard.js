@@ -64,7 +64,7 @@ function AdminDashboard() {
     
     // إذا كان المسار يبدأ بـ /uploads/ أو يحتوي على uploads
     if (img.startsWith('/uploads/') || img.includes('uploads/')) {
-      return process.env.REACT_APP_API_URL + (img.startsWith('/') ? img : '/' + img);
+      return (process.env.REACT_APP_API_URL || 'https://tabib-iq-backend-production.up.railway.app') + (img.startsWith('/') ? img : '/' + img);
     }
     
     // إذا كان URL كامل
@@ -72,7 +72,7 @@ function AdminDashboard() {
     
     // إذا كان اسم ملف فقط (بدون مسار)
     if (img && !img.includes('/') && !img.includes('http')) {
-      return `${process.env.REACT_APP_API_URL}/uploads/${img}`;
+      return `${process.env.REACT_APP_API_URL || 'https://tabib-iq-backend-production.up.railway.app'}/uploads/${img}`;
     }
     
     console.log('🔍 getImageUrl - img:', img);
@@ -133,10 +133,10 @@ function AdminDashboard() {
     try {
       // جلب البيانات الحقيقية من قاعدة البيانات
       const [usersRes, doctorsRes, appointmentsRes, healthCentersRes] = await Promise.all([
-        fetch(process.env.REACT_APP_API_URL + '/users'),
-        fetch(process.env.REACT_APP_API_URL + '/admin/doctors'),
-        fetch(process.env.REACT_APP_API_URL + '/appointments'),
-        fetch(process.env.REACT_APP_API_URL + '/health-centers')
+              fetch((process.env.REACT_APP_API_URL || 'https://tabib-iq-backend-production.up.railway.app') + '/users'),
+      fetch((process.env.REACT_APP_API_URL || 'https://tabib-iq-backend-production.up.railway.app') + '/admin/doctors'),
+      fetch((process.env.REACT_APP_API_URL || 'https://tabib-iq-backend-production.up.railway.app') + '/appointments'),
+      fetch((process.env.REACT_APP_API_URL || 'https://tabib-iq-backend-production.up.railway.app') + '/health-centers')
       ]);
 
       console.log('📊 استجابة المستخدمين:', usersRes?.status);
@@ -244,7 +244,7 @@ function AdminDashboard() {
     }
     
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/doctors/${doctorId}/approve`, {
+      const response = await fetch(`${process.env.REACT_APP_API_URL || 'https://tabib-iq-backend-production.up.railway.app'}/doctors/${doctorId}/approve`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' }
       });
@@ -276,7 +276,7 @@ function AdminDashboard() {
     }
     
       try {
-        const response = await fetch(`${process.env.REACT_APP_API_URL}/doctors/${doctorId}/reject`, {
+        const response = await fetch(`${process.env.REACT_APP_API_URL || 'https://tabib-iq-backend-production.up.railway.app'}/doctors/${doctorId}/reject`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' }
         });
@@ -340,8 +340,8 @@ function AdminDashboard() {
     try {
       // جلب جميع الأطباء والمواعيد لحساب الإحصائيات الحقيقية
       const [doctorsResponse, appointmentsResponse] = await Promise.all([
-                  fetch(process.env.REACT_APP_API_URL + '/admin/doctors'),
-                  fetch(process.env.REACT_APP_API_URL + '/appointments')
+                          fetch((process.env.REACT_APP_API_URL || 'https://tabib-iq-backend-production.up.railway.app') + '/admin/doctors'),
+        fetch((process.env.REACT_APP_API_URL || 'https://tabib-iq-backend-production.up.railway.app') + '/appointments')
       ]);
 
       if (doctorsResponse.ok && appointmentsResponse.ok) {
@@ -471,7 +471,7 @@ function AdminDashboard() {
     
     if (window.confirm('هل تريد إضافة هذا الطبيب إلى المميزين؟')) {
       try {
-        const response = await fetch(`${process.env.REACT_APP_API_URL}/doctors/${doctorId}/feature`, {
+        const response = await fetch(`${process.env.REACT_APP_API_URL || 'https://tabib-iq-backend-production.up.railway.app'}/doctors/${doctorId}/feature`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' }
         });
@@ -501,7 +501,7 @@ function AdminDashboard() {
     
     if (window.confirm('هل تريد إزالة هذا الطبيب من المميزين؟')) {
       try {
-        const response = await fetch(`${process.env.REACT_APP_API_URL}/doctors/${doctorId}/unfeature`, {
+        const response = await fetch(`${process.env.REACT_APP_API_URL || 'https://tabib-iq-backend-production.up.railway.app'}/doctors/${doctorId}/unfeature`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' }
         });
@@ -528,7 +528,7 @@ function AdminDashboard() {
   const deleteUser = async (userId) => {
     if (window.confirm('هل أنت متأكد من حذف هذا المستخدم؟')) {
       try {
-        const response = await fetch(`${process.env.REACT_APP_API_URL}/users/${userId}`, {
+        const response = await fetch(`${process.env.REACT_APP_API_URL || 'https://tabib-iq-backend-production.up.railway.app'}/users/${userId}`, {
           method: 'DELETE'
         });
         
@@ -548,7 +548,7 @@ function AdminDashboard() {
   const deleteDoctor = async (doctorId) => {
     if (window.confirm('هل أنت متأكد من حذف هذا الطبيب؟')) {
       try {
-        const response = await fetch(`${process.env.REACT_APP_API_URL}/doctors/${doctorId}`, {
+        const response = await fetch(`${process.env.REACT_APP_API_URL || 'https://tabib-iq-backend-production.up.railway.app'}/doctors/${doctorId}`, {
           method: 'DELETE'
         });
         
@@ -574,7 +574,7 @@ function AdminDashboard() {
     }
 
     try {
-      const response = await fetch(process.env.REACT_APP_API_URL + '/health-centers', {
+      const response = await fetch((process.env.REACT_APP_API_URL || 'https://tabib-iq-backend-production.up.railway.app') + '/health-centers', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -627,7 +627,7 @@ function AdminDashboard() {
   const deleteHealthCenter = async (centerId) => {
     if (window.confirm('هل أنت متأكد من حذف هذا المركز الصحي؟')) {
       try {
-        const response = await fetch(`${process.env.REACT_APP_API_URL}/health-centers/${centerId}`, {
+        const response = await fetch(`${process.env.REACT_APP_API_URL || 'https://tabib-iq-backend-production.up.railway.app'}/health-centers/${centerId}`, {
           method: 'DELETE',
           headers: {
             'Content-Type': 'application/json',
@@ -1122,7 +1122,7 @@ function AdminDashboard() {
                             const confirmMsg = user.disabled ? 'تفعيل هذا المستخدم؟' : 'تعطيل هذا المستخدم؟';
                             if (!window.confirm(confirmMsg)) return;
                             try {
-                              const response = await fetch(`${process.env.REACT_APP_API_URL}/admin/toggle-account/user/${user._id || user.id}`,
+                              const response = await fetch(`${process.env.REACT_APP_API_URL || 'https://tabib-iq-backend-production.up.railway.app'}/admin/toggle-account/user/${user._id || user.id}`,
                                 {
                                   method: 'POST',
                                   headers: { 'Content-Type': 'application/json' },
@@ -1234,7 +1234,7 @@ function AdminDashboard() {
                             if (!window.confirm(confirmMsg)) return;
                             try {
                               const doctorId = doctor._id || doctor.id;
-                              const url = `${process.env.REACT_APP_API_URL}/admin/toggle-account/doctor/${doctorId}`;
+                              const url = `${process.env.REACT_APP_API_URL || 'https://tabib-iq-backend-production.up.railway.app'}/admin/toggle-account/doctor/${doctorId}`;
                               console.log('Trying to toggle doctor:', doctorId, url, { disabled: !doctor.disabled });
                               const response = await fetch(url,
                                 {
