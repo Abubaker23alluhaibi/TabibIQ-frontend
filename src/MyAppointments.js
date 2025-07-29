@@ -18,7 +18,7 @@ function MyAppointments() {
 
 
   useEffect(() => {
-    if (!user?._id) {
+    if (!user?.id) {
       setError(t('login_required'));
       setLoading(false);
       return;
@@ -31,8 +31,8 @@ function MyAppointments() {
 
   const fetchMyAppointments = async () => {
     try {
-      console.log('🔍 جلب مواعيد المستخدم:', user._id);
-      const res = await fetch(`${process.env.REACT_APP_API_URL}/appointments/patient/${user._id}`);
+              console.log('🔍 جلب مواعيد المستخدم:', user.id);
+      const res = await fetch(`${process.env.REACT_APP_API_URL}/appointments/patient/${user.id}`);
       
       if (res.ok) {
         const data = await res.json();

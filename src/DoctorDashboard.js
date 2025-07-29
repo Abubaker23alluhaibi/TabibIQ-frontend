@@ -89,8 +89,8 @@ function DoctorDashboard() {
 
   // جلب إشعارات الدكتور
   useEffect(() => {
-    if (!profile?._id) return;
-    fetch(`${process.env.REACT_APP_API_URL}/notifications?doctorId=${profile._id}`)
+    if (!profile?.id) return;
+    fetch(`${process.env.REACT_APP_API_URL}/notifications?doctorId=${profile.id}`)
       .then(res => res.json())
       .then(data => {
         if (!Array.isArray(data)) {
@@ -105,18 +105,18 @@ function DoctorDashboard() {
 
   // تعليم كل الإشعارات كمقروءة عند فتح نافذة الإشعارات
   useEffect(() => {
-    if (showNotif && profile?._id && notifCount > 0) {
+    if (showNotif && profile?.id && notifCount > 0) {
       setNotifCount(0); // تصفير العداد فوراً
-      fetch(`${process.env.REACT_APP_API_URL}/notifications/mark-read?doctorId=${profile._id}`, { method: 'PUT' });
+      fetch(`${process.env.REACT_APP_API_URL}/notifications/mark-read?doctorId=${profile.id}`, { method: 'PUT' });
     }
-  }, [showNotif, profile?._id]);
+  }, [showNotif, profile?.id]);
 
   // دالة موحدة لجلب جميع مواعيد الطبيب
   const fetchAllAppointments = async () => {
-    if (!profile?._id) return;
+    if (!profile?.id) return;
     setLoading(true);
     try {
-      const res = await fetch(`${process.env.REACT_APP_API_URL}/appointments/doctor/${profile._id}`);
+      const res = await fetch(`${process.env.REACT_APP_API_URL}/appointments/doctor/${profile.id}`);
       const data = await res.json();
       setAppointments(Array.isArray(data) ? data : []);
       setLoading(false);
@@ -129,19 +129,19 @@ function DoctorDashboard() {
   // جلب المواعيد عند تحميل الصفحة
   useEffect(() => {
     fetchAllAppointments();
-  }, [profile?._id]);
+  }, [profile?.id]);
 
   // إعادة تحميل المواعيد عند التركيز على الصفحة
   useEffect(() => {
     const handleFocus = () => {
-      if (profile?._id) {
+      if (profile?.id) {
         fetchAllAppointments();
       }
     };
 
     window.addEventListener('focus', handleFocus);
     return () => window.removeEventListener('focus', handleFocus);
-  }, [profile?._id]);
+  }, [profile?.id]);
 
   // مراقبة التغييرات في localStorage للمواعيد الخاصة
   useEffect(() => {
@@ -155,7 +155,7 @@ function DoctorDashboard() {
 
     window.addEventListener('storage', handleStorageChange);
     return () => window.removeEventListener('storage', handleStorageChange);
-  }, [profile?._id]);
+  }, [profile?.id]);
 
   // دالة لفتح نافذة الملاحظة:
   const openNoteModal = (phone) => {
@@ -168,13 +168,13 @@ function DoctorDashboard() {
   // تحديث المواعيد كل دقيقة للتأكد من البيانات الحالية
   useEffect(() => {
     const interval = setInterval(() => {
-      if (profile?._id) {
+      if (profile?.id) {
         fetchAllAppointments();
       }
     }, 60000); // كل دقيقة
 
     return () => clearInterval(interval);
-  }, [profile?._id]);
+  }, [profile?.id]);
 
   // مراقبة تغيير التاريخ وتحديث المواعيد تلقائياً
   useEffect(() => {
@@ -190,7 +190,7 @@ function DoctorDashboard() {
     const dateInterval = setInterval(checkDateChange, 30000);
     
     return () => clearInterval(dateInterval);
-  }, [selectedDate, profile?._id]);
+  }, [selectedDate, profile?.id]);
 
   if (profile && profile.status === 'pending') {
     return (

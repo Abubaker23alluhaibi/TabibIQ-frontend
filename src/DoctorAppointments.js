@@ -47,7 +47,7 @@ function DoctorAppointments() {
   const { t } = useTranslation();
 
   useEffect(() => {
-    if (!profile?._id) {
+    if (!profile?.id) {
       setError(t('login_required'));
       setLoading(false);
       return;
@@ -63,7 +63,7 @@ function DoctorAppointments() {
 
   const fetchDoctorAppointments = async () => {
     try {
-      const res = await fetch(`${process.env.REACT_APP_API_URL}/appointments/doctor/${profile._id}`);
+      const res = await fetch(`${process.env.REACT_APP_API_URL}/appointments/doctor/${profile.id}`);
       if (res.ok) {
         const data = await res.json();
         

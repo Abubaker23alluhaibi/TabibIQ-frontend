@@ -97,7 +97,19 @@ export const AuthProvider = ({ children }) => {
           userData.user_type = userData.role;
         }
         
+        // التأكد من وجود id
+        if (userData._id && !userData.id) {
+          userData.id = userData._id;
+        }
+        
+        // التأكد من وجود first_name
+        if (userData.name && !userData.first_name) {
+          userData.first_name = userData.name;
+        }
+        
         console.log('🔍 user_type النهائي:', userData.user_type);
+        console.log('🔍 id النهائي:', userData.id);
+        console.log('🔍 first_name النهائي:', userData.first_name);
         
         setUser(userData);
         setProfile(userData);
@@ -139,15 +151,17 @@ export const AuthProvider = ({ children }) => {
       console.log('🔍 updateProfile - currentUser:', currentUser);
       console.log('🔍 updateProfile - updates:', updates);
       
-      if (!currentUser?._id) {
+      if (!currentUser?.id && !currentUser?._id) {
         return { data: null, error: 'لا يمكن العثور على معرف المستخدم' };
       }
       
+      const userId = currentUser.id || currentUser._id;
+      
       if (currentUser.user_type === 'doctor') {
-        url = `${process.env.REACT_APP_API_URL}/doctor/${currentUser._id}`;
+        url = `${process.env.REACT_APP_API_URL}/doctor/${userId}`;
         key = 'doctor';
       } else {
-        url = `${process.env.REACT_APP_API_URL}/user/${currentUser._id}`;
+        url = `${process.env.REACT_APP_API_URL}/user/${userId}`;
         key = 'user';
       }
       

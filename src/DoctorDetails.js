@@ -176,7 +176,7 @@ useEffect(() => {
   const handleBook = async (e) => {
     e.preventDefault();
     
-    const userId = user?._id || user?.id;
+    const userId = user?.id || user?._id;
     console.log('🔍 handleBook - user:', user);
     console.log('🔍 handleBook - userId:', userId);
     
@@ -252,7 +252,7 @@ useEffect(() => {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-              userId: user._id,
+              userId: user.id || user._id,
               doctorId: doctor._id,
               title: 'موعد جديد',
               message: `تم حجز موعد جديد من قبل ${profile?.first_name || 'مستخدم'} في ${bookingData.date} الساعة ${bookingData.time}`,
