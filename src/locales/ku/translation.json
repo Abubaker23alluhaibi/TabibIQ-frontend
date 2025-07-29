@@ -290,7 +290,12 @@
   "about_doctor_label": "دەربارەی پزیشک",
   "choose_booking_day": "ڕۆژی چاوپێکەوتن هەلبژێرە",
   "booking_in_progress": "...چاوپێکەوتن لە جێدەکرێت",
-  "book_appointment_button": "چاوپێکەوتن بکە"
+  "book_appointment_button": "چاوپێکەوتن بکە",
+  "from_time": "کاتەکە لە",
+  "to_time": "کاتەکە بۆ",
+  "time_label": "کات",
+  "name_label": "ناو",
+  "upload_documents": "بەرزکردنەوەی دۆکیومێنتەکان"
   ,
   "specialty_categories": [
     { "category": "پزیشکی گشتی و بنەڕەتی", "specialties": ["پزیشکی گشتی", "خێزان", "منداڵ", "ژن و لەدایکبوون", "فوریت", "پزیشکی پیران"] },

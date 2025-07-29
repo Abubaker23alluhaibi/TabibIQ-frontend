@@ -1421,20 +1421,24 @@ function AddSpecialAppointmentForm({ onClose, onAdd, profile }) {
             <label style={{display:'block', marginBottom:'0.3rem', color:'#333', fontWeight:600, fontSize:13}}>
               {t('patient_phone')} *
             </label>
-            <input
-              type="tel"
-              placeholder={t('enter_patient_phone')}
-              value={formData.patientPhone}
-              onChange={e => handlePhoneChange(e.target.value)}
-              style={{
-                width:'100%',
-                padding:'0.7rem',
-                borderRadius:7,
-                border:'1.5px solid #e0e0e0',
-                fontSize:14
-              }}
-              required
-            />
+            <div style={{display:'flex', alignItems:'center', width:'100%', maxWidth:'100%'}}>
+              <span style={{background:'#e0f7fa', color:'#009688', borderRadius:'7px 0 0 7px', padding:'0.7rem 0.7rem', fontWeight:700, fontSize:'1.08rem', border:'1.5px solid #e0e0e0', borderRight:'none'}}>+964</span>
+              <input
+                type="tel"
+                placeholder={t('enter_patient_phone')}
+                value={formData.patientPhone}
+                onChange={e => handlePhoneChange(e.target.value)}
+                style={{
+                  flex:1,
+                  padding:'0.7rem',
+                  borderRadius:'0 7px 7px 0',
+                  border:'1.5px solid #e0e0e0',
+                  borderLeft:'none',
+                  fontSize:14
+                }}
+                required
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -1543,10 +1547,21 @@ function EditSpecialAppointmentForm({ appointment, onSubmit, onClose }) {
         throw new Error('يرجى ملء جميع الحقول المطلوبة');
       }
 
-      // إرسال إشعار للمريض عن التعديل
-      await sendNotificationToPatient(formData, 'update');
+      // توحيد رقم الهاتف العراقي
+      const normalizedPhone = normalizePhone(formData.patientPhone);
+      console.log('🔍 الرقم الأصلي:', formData.patientPhone);
+      console.log('🔍 الرقم الموحد:', normalizedPhone);
+      
+      // تحديث البيانات بالرقم الموحد
+      const updatedFormData = {
+        ...formData,
+        patientPhone: normalizedPhone
+      };
 
-      await onSubmit(formData);
+      // إرسال إشعار للمريض عن التعديل
+      await sendNotificationToPatient(updatedFormData, 'update');
+
+      await onSubmit(updatedFormData);
     } catch (err) {
               setError(err.message || t('error_updating_special_appointment'));
     } finally {
@@ -1636,23 +1651,34 @@ function EditSpecialAppointmentForm({ appointment, onSubmit, onClose }) {
             <label style={{display:'block', marginBottom:'0.3rem', color:'#333', fontWeight:600, fontSize:13}}>
               رقم الهاتف *
             </label>
-            <input
-              type="tel"
-              placeholder="7xxxxxxxxx (بدون صفر في البداية)"
-              value={formData.patientPhone}
-              onChange={e => {
+            <div style={{display:'flex', alignItems:'center', width:'100%', maxWidth:'100%'}}>
+              <span style={{background:'#e0f7fa', color:'#009688', borderRadius:'7px 0 0 7px', padding:'0.7rem 0.7rem', fontWeight:700, fontSize:'1.08rem', border:'1.5px solid #e0e0e0', borderRight:'none'}}>+964</span>
+              <input
+                type="tel"
+                placeholder="7xxxxxxxxx (بدون صفر في البداية)"
+                value={formData.patientPhone}
+                              onChange={e => {
                 let value = e.target.value.replace(/\D/g, '');
-                handleInputChange('patientPhone', value);
+                // توحيد الرقم العراقي
+                let normalizedPhone = normalizePhone(value);
+                // إزالة +964 من العرض في الحقل
+                let displayPhone = normalizedPhone.replace('+964', '');
+                if (displayPhone.startsWith('0')) {
+                  displayPhone = displayPhone.substring(1);
+                }
+                handleInputChange('patientPhone', displayPhone);
               }}
-              style={{
-                width:'100%',
-                padding:'0.7rem',
-                borderRadius:7,
-                border:'1.5px solid #e0e0e0',
-                fontSize:14
-              }}
-              required
-            />
+                style={{
+                  flex:1,
+                  padding:'0.7rem',
+                  borderRadius:'0 7px 7px 0',
+                  border:'1.5px solid #e0e0e0',
+                  borderLeft:'none',
+                  fontSize:14
+                }}
+                required
+              />
+            </div>
           </div>
         </div>
       </div>

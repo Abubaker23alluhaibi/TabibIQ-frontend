@@ -515,11 +515,11 @@ function DoctorSignUp() {
                 </select>
                     <div style={{display:'flex', gap:8}}>
                       <div style={{flex:1, display:'flex', flexDirection:'column'}}>
-                        <label style={{fontSize:13, color:'#009688', marginBottom:2}}>{t('from_time') || 'وقت البدء'}</label>
+                        <label style={{fontSize:13, color:'#009688', marginBottom:2}}>{t('from_time')}</label>
                         <input type="time" value={newTime.from} onChange={e=>setNewTime({...newTime, from: e.target.value})} style={{borderRadius:8, padding:'.7rem', width:'100%', fontSize:16}} />
                       </div>
                       <div style={{flex:1, display:'flex', flexDirection:'column'}}>
-                        <label style={{fontSize:13, color:'#009688', marginBottom:2}}>{t('to_time') || 'وقت النهاية'}</label>
+                        <label style={{fontSize:13, color:'#009688', marginBottom:2}}>{t('to_time')}</label>
                         <input type="time" value={newTime.to} onChange={e=>setNewTime({...newTime, to: e.target.value})} style={{borderRadius:8, padding:'.7rem', width:'100%', fontSize:16}} />
                       </div>
                     </div>

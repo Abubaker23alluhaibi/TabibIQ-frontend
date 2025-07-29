@@ -108,6 +108,8 @@ useEffect(() => {
       const userId = user?._id || user?.id;
       console.log('🔍 fetchBookedAppointments - user:', user);
       console.log('🔍 fetchBookedAppointments - userId:', userId);
+      console.log('🔍 fetchBookedAppointments - doctorId:', doctorId);
+      console.log('🔍 fetchBookedAppointments - date:', date);
       
       if (!userId) {
         console.log('❌ لا يوجد مستخدم مسجل');
@@ -116,9 +118,13 @@ useEffect(() => {
       }
       
       const res = await fetch(`${process.env.REACT_APP_API_URL}/appointments/${doctorId}/${date}?patientId=${userId}`);
+      console.log('🔍 fetchBookedAppointments - response status:', res.status);
+      
       if (res.ok) {
         const appointments = await res.json();
+        console.log('🔍 fetchBookedAppointments - appointments:', appointments);
         const bookedTimeSlots = appointments.map(apt => apt.time);
+        console.log('🔍 fetchBookedAppointments - bookedTimeSlots:', bookedTimeSlots);
         setBookedTimes(bookedTimeSlots);
       } else if (res.status === 401) {
         console.log('❌ يجب تسجيل الدخول أولاً');
@@ -145,7 +151,10 @@ useEffect(() => {
     const dayName = weekDays[selectedDate.getDay()];
     const times = doctor.workTimes.filter(wt => wt.day === dayName);
     
-    
+    console.log('🔍 useEffect - selectedDate:', selectedDate);
+    console.log('🔍 useEffect - dayName:', dayName);
+    console.log('🔍 useEffect - doctor.workTimes:', doctor.workTimes);
+    console.log('🔍 useEffect - times:', times);
     
     // تقسيم كل فترة زمنية إلى مواعيد منفصلة
     const allSlots = [];
@@ -156,12 +165,14 @@ useEffect(() => {
       }
     });
     
-    
+    console.log('🔍 useEffect - allSlots:', allSlots);
     setAvailableTimes(allSlots);
     setSelectedTime('');
     
     // جلب المواعيد المحجوزة لهذا اليوم
     const dateString = selectedDate.toISOString().slice(0,10);
+    console.log('🔍 useEffect - dateString:', dateString);
+    console.log('🔍 useEffect - doctor._id:', doctor._id);
     fetchBookedAppointments(doctor._id, dateString);
   }, [selectedDate, doctor]);
 
@@ -417,9 +428,58 @@ useEffect(() => {
           {selectedDate && availableTimes.length > 0 && (
             <div style={{marginTop:18}}>
               <div style={{fontWeight:700, fontSize:16, color:'#7c4dff', marginBottom:8}}>اختر موعد الحجز:</div>
+              {/* شرح الرموز */}
+              <div style={{
+                background: '#f8f9fa', 
+                borderRadius: 8, 
+                padding: '0.8rem', 
+                marginBottom: 12,
+                border: '1px solid #e9ecef',
+                fontSize: 13,
+                color: '#666'
+              }}>
+                <div style={{display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4}}>
+                  <div style={{
+                    width: 16, 
+                    height: 16, 
+                    background: '#f0f0f0', 
+                    borderRadius: 4,
+                    border: '1px solid #ddd'
+                  }}></div>
+                  <span>متاح للحجز</span>
+                </div>
+                <div style={{display: 'flex', alignItems: 'center', gap: 8}}>
+                  <div style={{
+                    width: 16, 
+                    height: 16, 
+                    background: '#ffebee', 
+                    borderRadius: 4,
+                    border: '2px solid #f44336',
+                    position: 'relative'
+                  }}>
+                    <div style={{
+                      position: 'absolute',
+                      top: -4,
+                      right: -4,
+                      background: '#f44336',
+                      color: '#fff',
+                      borderRadius: '50%',
+                      width: 12,
+                      height: 12,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      fontSize: 8,
+                      fontWeight: 700
+                    }}>✕</div>
+                  </div>
+                  <span style={{color: '#d32f2f'}}>محجوز</span>
+                </div>
+              </div>
               <div style={{display:'flex', flexWrap:'wrap', gap:8}}>
                 {availableTimes.map((time, idx) => {
                   const isBooked = bookedTimes.includes(time);
+                  console.log(`🔍 Time ${time}: isBooked = ${isBooked}`);
                   return (
                     <button
                       key={idx}
@@ -427,19 +487,45 @@ useEffect(() => {
                       disabled={isBooked}
                       onClick={()=>!isBooked && setSelectedTime(time)}
                       style={{
-                        background: isBooked ? '#fafafa' : (selectedTime === time ? '#7c4dff' : '#f0f0f0'),
-                        color: isBooked ? '#b0b0b0' : (selectedTime === time ? '#fff' : '#333'),
-                        border: isBooked ? '1px solid #e8e8e8' : 'none',
-                        borderRadius:12, padding:'0.8rem 1.2rem', fontWeight: isBooked ? 400 : 700, fontSize:14, 
+                        background: isBooked ? '#ffebee' : (selectedTime === time ? '#7c4dff' : '#f0f0f0'),
+                        color: isBooked ? '#d32f2f' : (selectedTime === time ? '#fff' : '#333'),
+                        border: isBooked ? '2px solid #f44336' : 'none',
+                        borderRadius:12, 
+                        padding:'0.8rem 1.2rem', 
+                        fontWeight: isBooked ? 600 : 700, 
+                        fontSize:14, 
                         cursor: isBooked ? 'not-allowed' : 'pointer', 
-                        boxShadow: selectedTime === time ? '0 2px 8px #7c4dff44' : (isBooked ? 'none' : '0 1px 4px #00000022'),
-                        transition:'all 0.2s ease', minWidth:80, textAlign:'center',
-                        opacity: isBooked ? 0.25 : 1,
+                        boxShadow: selectedTime === time ? '0 2px 8px #7c4dff44' : (isBooked ? '0 2px 4px #f4433622' : '0 1px 4px #00000022'),
+                        transition:'all 0.2s ease', 
+                        minWidth:80, 
+                        textAlign:'center',
+                        opacity: isBooked ? 0.8 : 1,
                         position: 'relative',
-                        filter: isBooked ? 'grayscale(50%)' : 'none'
+                        filter: isBooked ? 'none' : 'none'
                       }}
+                      title={isBooked ? 'هذا الوقت محجوز' : 'اضغط لاختيار هذا الوقت'}
                     >
-                      {time} {isBooked && <span style={{fontSize: '11px', color: '#a0a0a0', fontWeight: 400}}>(محجوز)</span>}
+                      {time} 
+                      {isBooked && (
+                        <div style={{
+                          position: 'absolute',
+                          top: -8,
+                          right: -8,
+                          background: '#f44336',
+                          color: '#fff',
+                          borderRadius: '50%',
+                          width: 20,
+                          height: 20,
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          fontSize: 10,
+                          fontWeight: 700
+                        }}>
+                          ✕
+                        </div>
+                      )}
+                      {isBooked && <div style={{fontSize: '10px', color: '#d32f2f', fontWeight: 600, marginTop: 2}}>محجوز</div>}
                     </button>
                   );
                 })}

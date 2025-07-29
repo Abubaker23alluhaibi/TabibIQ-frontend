@@ -487,5 +487,10 @@
   "status": "الحالة",
   "show_more": "عرض المزيد",
   "show_less": "عرض أقل",
-  "more": "أخرى"
+  "more": "أخرى",
+  "from_time": "الوقت من",
+  "to_time": "الوقت إلى",
+  "time_label": "الوقت",
+  "name_label": "الاسم",
+  "upload_documents": "رفع الوثائق"
 }

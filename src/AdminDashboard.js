@@ -61,8 +61,20 @@ function AdminDashboard() {
   // دالة مساعدة لمسار الصور والوثائق
   const getImageUrl = (img) => {
     if (!img) return null;
-    if (img.startsWith('/uploads/')) return process.env.REACT_APP_API_URL + img;
+    
+    // إذا كان المسار يبدأ بـ /uploads/ أو يحتوي على uploads
+    if (img.startsWith('/uploads/') || img.includes('uploads/')) {
+      return process.env.REACT_APP_API_URL + (img.startsWith('/') ? img : '/' + img);
+    }
+    
+    // إذا كان URL كامل
     if (img.startsWith('http')) return img;
+    
+    // إذا كان اسم ملف فقط (بدون مسار)
+    if (img && !img.includes('/') && !img.includes('http')) {
+      return `${process.env.REACT_APP_API_URL}/uploads/${img}`;
+    }
+    
     console.log('🔍 getImageUrl - img:', img);
     return null;
   };
@@ -157,6 +169,15 @@ function AdminDashboard() {
             idBack: doctor.idBack,
             syndicateFront: doctor.syndicateFront,
             syndicateBack: doctor.syndicateBack
+          });
+          
+          // تشخيص URLs
+          console.log(`🔗 URLs للطبيب ${doctor.name}:`, {
+            imageUrl: getImageUrl(doctor.image),
+            idFrontUrl: getImageUrl(doctor.idFront),
+            idBackUrl: getImageUrl(doctor.idBack),
+            syndicateFrontUrl: getImageUrl(doctor.syndicateFront),
+            syndicateBackUrl: getImageUrl(doctor.syndicateBack)
           });
         });
         
@@ -1385,6 +1406,13 @@ function AdminDashboard() {
                             idBack: doctor.idBack,
                             syndicateFront: doctor.syndicateFront,
                             syndicateBack: doctor.syndicateBack
+                          })}
+                          {console.log('🔗 URLs النهائية:', {
+                            imageUrl: getImageUrl(doctor.image),
+                            idFrontUrl: getImageUrl(doctor.idFront),
+                            idBackUrl: getImageUrl(doctor.idBack),
+                            syndicateFrontUrl: getImageUrl(doctor.syndicateFront),
+                            syndicateBackUrl: getImageUrl(doctor.syndicateBack)
                           })}
                           
                           {/* الصورة الشخصية */}

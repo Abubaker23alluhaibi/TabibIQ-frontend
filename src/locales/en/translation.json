@@ -187,5 +187,10 @@
   "status": "Status",
   "show_more": "Show More",
   "show_less": "Show Less",
-  "more": "more"
+  "more": "more",
+  "from_time": "Time From",
+  "to_time": "Time To",
+  "time_label": "Time",
+  "name_label": "Name",
+  "upload_documents": "Upload Documents"
 } 
