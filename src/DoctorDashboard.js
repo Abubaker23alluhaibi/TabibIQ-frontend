@@ -249,7 +249,13 @@ function DoctorDashboard() {
   // إضافة console.log للتشخيص
   console.log('🔍 التاريخ الحالي:', today);
   console.log('🔍 مواعيد اليوم:', todayAppointments);
-  console.log('🔍 جميع المواعيد:', appointmentsArray.map(a => ({ date: a.date, time: a.time, name: a.userId?.first_name || a.userName })));
+  console.log('🔍 جميع المواعيد:', appointmentsArray.map(a => ({ 
+    date: a.date, 
+    time: a.time, 
+    patientName: a.patientId?.name, 
+    patientPhone: a.patientId?.phone,
+    patientEmail: a.patientId?.email 
+  })));
   
   // حساب إحصائيات سريعة
   const totalAppointments = appointmentsArray.length;
@@ -576,12 +582,12 @@ function DoctorDashboard() {
                     </div>
                     <div style={{flex:1, minWidth:0}}>
                       <div style={{color:'#7c4dff', fontWeight:700, fontSize: window.innerWidth < 500 ? '0.95rem' : '1rem', marginBottom:2}}>
-                        👤 {appointment.userId?.first_name || appointment.userName || t('patient_name')}
+                        👤 {appointment.patientId?.name || appointment.userId?.first_name || appointment.userName || t('patient_name')}
                       </div>
                       {/* عرض رقم الهاتف */}
-                      {(appointment.patientPhone || (/^\+?\d{10,}$/.test(appointment.notes))) && (
+                      {(appointment.patientId?.phone || appointment.patientPhone || (/^\+?\d{10,}$/.test(appointment.notes))) && (
                         <div style={{fontSize: window.innerWidth < 500 ? '0.78rem' : '0.85rem', color:'#888', marginTop:1}}>
-                          📞 {appointment.patientPhone || appointment.notes}
+                          📞 {appointment.patientId?.phone || appointment.patientPhone || appointment.notes}
                         </div>
                       )}
                       {appointment.reason && (
