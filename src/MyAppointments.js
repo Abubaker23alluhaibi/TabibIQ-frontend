@@ -32,7 +32,7 @@ function MyAppointments() {
   const fetchMyAppointments = async () => {
     try {
       console.log('🔍 جلب مواعيد المستخدم:', user._id);
-      const res = await fetch(`${process.env.REACT_APP_API_URL}/user-appointments/${user._id}`);
+      const res = await fetch(`${process.env.REACT_APP_API_URL}/appointments/patient/${user._id}`);
       
       if (res.ok) {
         const data = await res.json();

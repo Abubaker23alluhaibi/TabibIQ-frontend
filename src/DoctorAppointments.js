@@ -63,7 +63,7 @@ function DoctorAppointments() {
 
   const fetchDoctorAppointments = async () => {
     try {
-      const res = await fetch(`${process.env.REACT_APP_API_URL}/doctor-appointments/${profile._id}`);
+      const res = await fetch(`${process.env.REACT_APP_API_URL}/appointments/doctor/${profile._id}`);
       if (res.ok) {
         const data = await res.json();
         

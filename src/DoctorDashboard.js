@@ -116,7 +116,7 @@ function DoctorDashboard() {
     if (!profile?._id) return;
     setLoading(true);
     try {
-      const res = await fetch(`${process.env.REACT_APP_API_URL}/doctor-appointments/${profile._id}`);
+      const res = await fetch(`${process.env.REACT_APP_API_URL}/appointments/doctor/${profile._id}`);
       const data = await res.json();
       setAppointments(Array.isArray(data) ? data : []);
       setLoading(false);
