@@ -281,6 +281,9 @@ useEffect(() => {
         }
         
         setSuccess('تم حجز الموعد بنجاح!');
+        // تحديث الأوقات المحجوزة مباشرة بعد الحجز
+        const dateString = formatDate(selectedDate);
+        fetchBookedAppointments(doctor._id, dateString);
         setSelectedDate(null);
         setSelectedTime('');
         setReason('');
