@@ -43,22 +43,29 @@ function UserProfile() {
 
   // تحديث النموذج عند تغيير البيانات الشخصية
   useEffect(() => {
+    console.log('🔍 UserProfile - profile:', profile);
+    console.log('🔍 UserProfile - user:', user);
+    
     if (profile) {
-      setForm({
-        first_name: profile.first_name || '',
+      const formData = {
+        first_name: profile.first_name || profile.name || '',
         email: profile.email || '',
         phone: profile.phone || '',
         profileImage: profile.profileImage || profile.avatar || ''
-      });
+      };
+      console.log('🔍 UserProfile - formData from profile:', formData);
+      setForm(formData);
       setImageLoadError(false);
     } else if (user) {
       // إذا لم يكن هناك profile، استخدم user
-      setForm({
-        first_name: user.first_name || '',
+      const formData = {
+        first_name: user.first_name || user.name || '',
         email: user.email || '',
         phone: user.phone || '',
         profileImage: user.profileImage || user.avatar || ''
-      });
+      };
+      console.log('🔍 UserProfile - formData from user:', formData);
+      setForm(formData);
       setImageLoadError(false);
     }
   }, [profile, user]);
