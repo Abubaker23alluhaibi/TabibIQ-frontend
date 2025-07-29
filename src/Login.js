@@ -67,21 +67,48 @@ function Login() {
   const testCORS = async () => {
     try {
       console.log('🔍 Testing CORS...');
-      const response = await fetch(`${process.env.REACT_APP_API_URL || 'https://tabib-iq-backend-production.up.railway.app'}/api/test-cors`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      });
       
-      if (response.ok) {
-        const data = await response.json();
-        console.log('✅ CORS test successful:', data);
-        alert('CORS test successful! Check console for details.');
-      } else {
-        console.log('❌ CORS test failed:', response.status);
-        alert(`CORS test failed: ${response.status}`);
+      // Test 1: Simple endpoint
+      try {
+        const response1 = await fetch(`${process.env.REACT_APP_API_URL || 'https://tabib-iq-backend-production.up.railway.app'}/cors-test`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
+        
+        if (response1.ok) {
+          const data1 = await response1.json();
+          console.log('✅ Simple CORS test successful:', data1);
+        } else {
+          console.log('❌ Simple CORS test failed:', response1.status);
+        }
+      } catch (error) {
+        console.log('❌ Simple CORS test error:', error.message);
       }
+      
+      // Test 2: API endpoint
+      try {
+        const response2 = await fetch(`${process.env.REACT_APP_API_URL || 'https://tabib-iq-backend-production.up.railway.app'}/api/test-cors`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
+        
+        if (response2.ok) {
+          const data2 = await response2.json();
+          console.log('✅ API CORS test successful:', data2);
+          alert('CORS test successful! Check console for details.');
+        } else {
+          console.log('❌ API CORS test failed:', response2.status);
+          alert(`CORS test failed: ${response2.status}`);
+        }
+      } catch (error) {
+        console.error('❌ API CORS test error:', error);
+        alert(`CORS test error: ${error.message}`);
+      }
+      
     } catch (error) {
       console.error('❌ CORS test error:', error);
       alert(`CORS test error: ${error.message}`);
@@ -306,28 +333,107 @@ function Login() {
         )}
 
         {/* زر اختبار CORS */}
-        <div style={{ display: 'flex', justifyContent: 'center', marginTop: 14 }}>
+        <div style={{ display: 'flex', justifyContent: 'center', marginTop: 14, gap: 10 }}>
           <button
             type="button"
             onClick={testCORS}
             style={{
-              width: '100%',
-              maxWidth: 260,
+              width: '48%',
+              maxWidth: 120,
               background: 'linear-gradient(90deg,#ff9800 0%,#ffb74d 100%)',
               color: '#fff',
               border: '2px solid #ff9800',
               borderRadius: 14,
               padding: window.innerWidth < 500 ? '0.45rem 0.7rem' : '0.7rem 1.5rem',
               fontWeight: 900,
-              fontSize: window.innerWidth < 500 ? 13 : 16,
+              fontSize: window.innerWidth < 500 ? 11 : 14,
               cursor: 'pointer',
               boxShadow: '0 2px 12px #ff980022',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
-              letterSpacing: 0.2,
-              marginBottom: 10
+              letterSpacing: 0.2
             }}
           >
             اختبار CORS
+          </button>
+          
+          <button
+            type="button"
+            onClick={async () => {
+              try {
+                console.log('🔍 Testing direct login...');
+                
+                // Test 1: Test login endpoint
+                try {
+                  const response1 = await fetch(`${process.env.REACT_APP_API_URL || 'https://tabib-iq-backend-production.up.railway.app'}/api/test-login`, {
+                    method: 'POST',
+                    headers: {
+                      'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                      email: 'test@test.com',
+                      password: 'test123',
+                      loginType: 'user'
+                    })
+                  });
+                  
+                  if (response1.ok) {
+                    const data1 = await response1.json();
+                    console.log('✅ Test login endpoint successful:', data1);
+                  } else {
+                    console.log('❌ Test login endpoint failed:', response1.status);
+                  }
+                } catch (error) {
+                  console.log('❌ Test login endpoint error:', error.message);
+                }
+                
+                // Test 2: Actual login endpoint
+                try {
+                  const response2 = await fetch(`${process.env.REACT_APP_API_URL || 'https://tabib-iq-backend-production.up.railway.app'}/auth/login`, {
+                    method: 'POST',
+                    headers: {
+                      'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                      email: 'test@test.com',
+                      password: 'test123',
+                      loginType: 'user'
+                    })
+                  });
+                  
+                  if (response2.ok) {
+                    const data2 = await response2.json();
+                    console.log('✅ Direct login test successful:', data2);
+                    alert('Direct login test successful!');
+                  } else {
+                    console.log('❌ Direct login test failed:', response2.status);
+                    alert(`Direct login test failed: ${response2.status}`);
+                  }
+                } catch (error) {
+                  console.error('❌ Direct login test error:', error);
+                  alert(`Direct login test error: ${error.message}`);
+                }
+              } catch (error) {
+                console.error('❌ Direct login test error:', error);
+                alert(`Direct login test error: ${error.message}`);
+              }
+            }}
+            style={{
+              width: '48%',
+              maxWidth: 120,
+              background: 'linear-gradient(90deg,#4caf50 0%,#66bb6a 100%)',
+              color: '#fff',
+              border: '2px solid #4caf50',
+              borderRadius: 14,
+              padding: window.innerWidth < 500 ? '0.45rem 0.7rem' : '0.7rem 1.5rem',
+              fontWeight: 900,
+              fontSize: window.innerWidth < 500 ? 11 : 14,
+              cursor: 'pointer',
+              boxShadow: '0 2px 12px #4caf5022',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              letterSpacing: 0.2
+            }}
+          >
+            اختبار Login
           </button>
         </div>
 
