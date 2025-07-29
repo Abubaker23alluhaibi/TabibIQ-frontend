@@ -229,7 +229,12 @@ function DoctorDashboard() {
     );
   }
 
-  if (!profile || !profile._id) {
+  console.log('🔍 DoctorDashboard - profile:', profile);
+  console.log('🔍 DoctorDashboard - loading:', loading);
+  console.log('🔍 DoctorDashboard - error:', error);
+  
+  if (!profile || (!profile.id && !profile._id)) {
+    console.log('❌ DoctorDashboard - No profile data');
     return <div style={{textAlign:'center', marginTop:40}}>{t('loading_doctor_data')}</div>;
   }
 
