@@ -63,6 +63,31 @@ function Login() {
     }
   };
 
+  // دالة اختبار CORS
+  const testCORS = async () => {
+    try {
+      console.log('🔍 Testing CORS...');
+      const response = await fetch(`${process.env.REACT_APP_API_URL || 'https://tabib-iq-backend-production.up.railway.app'}/api/test-cors`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+      
+      if (response.ok) {
+        const data = await response.json();
+        console.log('✅ CORS test successful:', data);
+        alert('CORS test successful! Check console for details.');
+      } else {
+        console.log('❌ CORS test failed:', response.status);
+        alert(`CORS test failed: ${response.status}`);
+      }
+    } catch (error) {
+      console.error('❌ CORS test error:', error);
+      alert(`CORS test error: ${error.message}`);
+    }
+  };
+
   return (
     <div className="login-container" style={{
       background: 'linear-gradient(135deg, #00bcd4 0%, #009688 100%)',
@@ -279,6 +304,32 @@ function Login() {
             </div>
           </div>
         )}
+
+        {/* زر اختبار CORS */}
+        <div style={{ display: 'flex', justifyContent: 'center', marginTop: 14 }}>
+          <button
+            type="button"
+            onClick={testCORS}
+            style={{
+              width: '100%',
+              maxWidth: 260,
+              background: 'linear-gradient(90deg,#ff9800 0%,#ffb74d 100%)',
+              color: '#fff',
+              border: '2px solid #ff9800',
+              borderRadius: 14,
+              padding: window.innerWidth < 500 ? '0.45rem 0.7rem' : '0.7rem 1.5rem',
+              fontWeight: 900,
+              fontSize: window.innerWidth < 500 ? 13 : 16,
+              cursor: 'pointer',
+              boxShadow: '0 2px 12px #ff980022',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              letterSpacing: 0.2,
+              marginBottom: 10
+            }}
+          >
+            اختبار CORS
+          </button>
+        </div>
 
         {/* زر تواصل معنا */}
         <div style={{ display: 'flex', justifyContent: 'center', marginTop: 14 }}>

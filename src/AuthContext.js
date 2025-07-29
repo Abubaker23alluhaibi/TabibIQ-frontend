@@ -74,7 +74,7 @@ export const AuthProvider = ({ children }) => {
   const signIn = async (email, password, loginType) => {
     try {
       console.log('🔍 تسجيل الدخول:', { email, loginType });
-      console.log('🔍 API URL:', process.env.REACT_APP_API_URL);
+      console.log('🔍 API URL:', process.env.REACT_APP_API_URL || 'https://tabib-iq-backend-production.up.railway.app');
       
       const res = await fetch(`${process.env.REACT_APP_API_URL || 'https://tabib-iq-backend-production.up.railway.app'}/auth/login`, {
         method: 'POST',
