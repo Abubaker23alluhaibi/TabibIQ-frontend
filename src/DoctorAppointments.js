@@ -63,9 +63,12 @@ function DoctorAppointments() {
 
   const fetchDoctorAppointments = async () => {
     try {
+      console.log('🔍 جلب مواعيد الطبيب:', profile.id);
       const res = await fetch(`${process.env.REACT_APP_API_URL}/appointments/doctor/${profile.id}`);
       if (res.ok) {
         const data = await res.json();
+        console.log('✅ تم جلب مواعيد الطبيب:', data.length);
+        console.log('🔍 بيانات المواعيد:', data);
         
         // إزالة التكرار بشكل أكثر دقة
         const uniqueMap = new Map();
@@ -77,14 +80,15 @@ function DoctorAppointments() {
         });
         
         const uniqueAppointments = Array.from(uniqueMap.values());
-        
-        
+        console.log('✅ المواعيد بعد إزالة التكرار:', uniqueAppointments.length);
         
         setAppointments(uniqueAppointments);
       } else {
+        console.log('❌ خطأ في جلب مواعيد الطبيب:', res.status);
         setError(t('fetch_appointments_fail'));
       }
     } catch (err) {
+      console.error('❌ خطأ في جلب مواعيد الطبيب:', err);
       setError(t('fetch_appointments_error'));
     }
     setLoading(false);
@@ -661,7 +665,7 @@ function DoctorAppointments() {
                       </span>
                     </div>
                     <h3 style={{color:'#7c4dff', margin:'0 0 0.5rem 0', fontSize:'1.3rem'}}>
-                      👤 {appointment.userName || appointment.userId?.first_name || t('patient')}
+                      👤 {appointment.patientId?.name || appointment.userName || appointment.userId?.first_name || t('patient')}
                     </h3>
                     <div style={{color:'#666', marginBottom:'0.5rem', display:'flex', alignItems:'center', gap:'0.5rem'}}>
                       <span>📅</span>
@@ -680,9 +684,9 @@ function DoctorAppointments() {
                       </div>
                     )}
                     {/* عرض رقم الهاتف */}
-                    {(appointment.patientPhone || (/^\+?\d{10,}$/.test(appointment.notes)) || appointment.userId?.phone) && (
+                    {(appointment.patientId?.phone || appointment.patientPhone || (/^\+?\d{10,}$/.test(appointment.notes)) || appointment.userId?.phone) && (
                       <div style={{color:'#666', fontSize:'0.9rem'}}>
-                        📞 {appointment.patientPhone || (/^\+?\d{10,}$/.test(appointment.notes) ? appointment.notes : appointment.userId?.phone)}
+                        📞 {appointment.patientId?.phone || appointment.patientPhone || (/^\+?\d{10,}$/.test(appointment.notes) ? appointment.notes : appointment.userId?.phone)}
                       </div>
                     )}
                   </div>

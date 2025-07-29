@@ -38,8 +38,8 @@ function UserProfile() {
     confirmPassword: ''
   });
 
-  // إضافة console.log للتأكد من حالة edit
-  console.log('🔍 UserProfile - edit state:', edit);
+  // إضافة console.log للتأكد من حالة edit (معلق مؤقتاً)
+  // console.log('🔍 UserProfile - edit state:', edit);
 
   // تحديث النموذج عند تغيير البيانات الشخصية
   useEffect(() => {

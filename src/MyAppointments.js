@@ -420,7 +420,7 @@ function MyAppointments() {
                             )}
                           </div>
                           <h4 style={{color:'#e65100', margin:'0 0 0.3rem 0', fontSize:'1.1rem'}}>
-                            د. {appointment.doctorName || appointment.doctorId?.name || 'دكتور غير محدد'}
+                            د. {appointment.doctorName || appointment.doctorId?.name || appointment.doctorId || 'دكتور غير محدد'}
                           </h4>
                           <div style={{color:'#666', fontSize:'0.9rem'}}>
                             🕐 {appointment.time}
@@ -495,7 +495,7 @@ function MyAppointments() {
                       )}
                     </div>
                     <h3 style={{color:'#7c4dff', margin:'0 0 0.5rem 0', fontSize:'1.3rem'}}>
-                      د. {appointment.doctorName || appointment.doctorId?.name || 'دكتور غير محدد'}
+                      د. {appointment.doctorName || appointment.doctorId?.name || appointment.doctorId || 'دكتور غير محدد'}
                     </h3>
                     <div style={{color:'#666', marginBottom:'0.5rem'}}>
                       📅 {formatDate(appointment.date, t)}
